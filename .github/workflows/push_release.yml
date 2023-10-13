@@ -1,0 +1,17 @@
+name: Push to release branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment: production
+    concurrency: production
+
+    steps:
+      - name: Post to webhook
+        run: curl --fail-with-body -X POST ${{ secrets.DEPLOYER_WEBHOOK }}/${{ github.event.repository.name }}
